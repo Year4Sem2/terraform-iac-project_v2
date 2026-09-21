@@ -128,6 +128,8 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [aws_security_group.web.id]
   user_data              = data.template_file.user_data.rendered
 
+  user_data_replace_on_change = true   # ← THIS LINE
+
   tags = {
     Name        = "web-server"
     Environment = var.environment
