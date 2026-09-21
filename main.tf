@@ -108,7 +108,7 @@ locals {
     <html>
     <head><title>Automated Cloud Infrastructure</title></head>
     <body>
-      <h1>Welcome to Automated Cloud Infrastructure via IaC! Testing some changes!!</h1>
+      <h1>Welcome to Automated Cloud Infrastructure via IaC! Testing some changes in deployment!!</h1>
       <p>Deployed using Terraform on AWS</p>
       <p>Instance ID: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)</p>
       <p>Availability Zone: $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)</p>
