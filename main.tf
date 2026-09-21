@@ -90,8 +90,8 @@ resource "aws_security_group" "web" {
 
 # User Data Script
 
-data "template_file" "user_data" {
-  template = <<-EOF
+locals {
+  user_data = <<-EOF
     #!/bin/bash
     # Update packages
     yum update -y
@@ -104,7 +104,8 @@ data "template_file" "user_data" {
     systemctl enable httpd
 
     # Create custom webpage
-    echo "<html>
+    cat > /var/www/html/index.html <<'HTML'
+    <html>
     <head><title>Automated Cloud Infrastructure</title></head>
     <body>
       <h1>Welcome to Automated Cloud Infrastructure via IaC! Testing some changes!!</h1>
@@ -112,7 +113,8 @@ data "template_file" "user_data" {
       <p>Instance ID: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)</p>
       <p>Availability Zone: $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)</p>
     </body>
-    </html>" > /var/www/html/index.html
+    </html>
+    HTML
 
     # Set permissions
     chown -R apache:apache /var/www/html/
@@ -126,7 +128,7 @@ resource "aws_instance" "web" {
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.web.id]
-  user_data              = data.template_file.user_data.rendered
+  user_data              = local.user_data
 
   user_data_replace_on_change = true   # ← THIS LINE
 
