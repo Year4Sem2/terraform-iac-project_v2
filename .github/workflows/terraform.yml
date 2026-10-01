@@ -22,6 +22,7 @@ jobs:
         with:
           # terraform_version: 1.5.5
           terraform_version: "1.11.0" # or "~> 1.10.0"
+          ##
           terraform_wrapper: false
       - uses: aws-actions/configure-aws-credentials@v4
         with:
